@@ -1,0 +1,7 @@
+/www/node_modules
+/forum/node_modules
+/api/node_modules
+/database/data
+/database/keyfile
+/nginx/certs
+.env

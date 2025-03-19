@@ -1,0 +1,102 @@
+services:
+  nginx:
+    build:
+      context: ./nginx
+    image: nginx
+    container_name: ethernaught_org_nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    restart: always
+    networks:
+      ethernaught:
+        ipv4_address: 10.10.0.2
+    #profiles:
+    #  - donotstart
+
+  database:
+    image: mongo
+    container_name: ethernaught_org_database
+    ports:
+      - 27017:27017
+    volumes:
+      - ./database/data/db:/data/db
+      - ./database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - lan
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    command:
+      - /bin/sh
+      - -c
+      - |
+        mongod --bind_ip_all
+    #profiles:
+    #  - donotstart
+
+  web:
+    build:
+      context: ./www
+    image: ethernaught_org_www
+    container_name: www
+    environment:
+      NODE_ENV: production
+    restart: always
+    volumes:
+      - ./.env:/usr/src/app/.env
+      - ./modules:/usr/src/app/modules
+    networks:
+      ethernaught:
+        ipv4_address: 10.10.0.3
+    #profiles:
+    #  - donotstart
+
+  forum:
+    build:
+      context: ./forum
+    image: ethernaught_org_forum
+    container_name: forum
+    environment:
+      NODE_ENV: production
+    restart: always
+    volumes:
+      - ./.env:/usr/src/app/.env
+      - ./modules:/usr/src/app/modules
+    networks:
+      ethernaught:
+        ipv4_address: 10.10.0.4
+    #profiles:
+    #  - donotstart
+
+  api:
+    build:
+      context: ./api
+    image: ethernaught_org_api
+    container_name: api
+    environment:
+      NODE_ENV: production
+    restart: always
+    volumes:
+      - ./.env:/usr/src/app/.env
+      - ./modules:/usr/src/app/modules
+    networks:
+      ethernaught:
+        ipv4_address: 10.10.0.5
+    #profiles:
+    #  - donotstart
+
+networks:
+  ethernaught:
+    #external: true
+    driver: bridge
+    attachable: true
+    ipam:
+      config:
+        - subnet: 10.10.0.0/24
+  lan:
+    driver: bridge
