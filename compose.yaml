@@ -13,7 +13,7 @@ services:
     restart: always
     networks:
       ethernaught:
-        ipv4_address: 10.10.0.2
+        ipv4_address: 10.5.5.2
     #profiles:
     #  - donotstart
 
@@ -52,7 +52,7 @@ services:
       - ./modules:/usr/src/app/modules
     networks:
       ethernaught:
-        ipv4_address: 10.10.0.3
+        ipv4_address: 10.5.5.3
     profiles:
       - donotstart
 
@@ -69,7 +69,7 @@ services:
       - ./modules:/usr/src/app/modules
     networks:
       ethernaught:
-        ipv4_address: 10.10.0.4
+        ipv4_address: 10.5.5.4
     profiles:
       - donotstart
 
@@ -86,15 +86,15 @@ services:
       - ./modules:/usr/src/app/modules
     networks:
       ethernaught:
-        ipv4_address: 10.10.0.5
+        ipv4_address: 10.5.5.5
     profiles:
       - donotstart
 
   apt:
     build:
-      context: ./api
-    image: ethernaught_net_api
-    container_name: api
+      context: ./apt
+    image: ethernaught_net_apt
+    container_name: apt
     environment:
       NODE_ENV: production
     restart: always
@@ -103,7 +103,7 @@ services:
       - ./modules:/usr/src/app/modules
     networks:
       ethernaught:
-        ipv4_address: 10.10.0.6
+        ipv4_address: 10.5.5.6
     #profiles:
     #  - donotstart
 
@@ -114,6 +114,6 @@ networks:
     attachable: true
     ipam:
       config:
-        - subnet: 10.10.0.0/24
+        - subnet: 10.5.5.0/24
   lan:
     driver: bridge

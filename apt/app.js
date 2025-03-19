@@ -7,10 +7,10 @@ const session = require('express-session');
 const cookies = require('cookie-parser');
 const crypto = require('crypto');
 const MongoStore = require('connect-mongo');
-global.mongo = require('./modules/mongo');
+//global.mongo = require('./modules/mongo');
 require('dotenv').config();
 
-const mainController = require('./controllers/main');
+//const mainController = require('./controllers/main');
 
 const app = express();
 
@@ -19,8 +19,9 @@ app.set('views', __dirname+'/views');
 
 app.use(express.static('./public'));
 
-global.mongo.connectDatabase();
+//global.mongo.connectDatabase();
 
+/*
 app.use(session({
 	secret: process.env.SESSION_TOKEN,
 	resave: false,
@@ -37,14 +38,14 @@ app.use(session({
 		maxAge: 24*60*60*1000
 	}
 }));
-
+*/
 app.use(cookies());
 app.use(useragent.express());
 
 app.use('/repo', express.static('./repo'));
 
 app.get('*', (req, res) => {
-	mainController.getError(req, res, 404);
+	//mainController.getError(req, res, 404);
 });
 
 const server = http.createServer(app);

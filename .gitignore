@@ -1,6 +1,7 @@
 /www/node_modules
 /forum/node_modules
 /api/node_modules
+/apt/node_modules
 /apt/repo
 /database/data
 /database/keyfile
