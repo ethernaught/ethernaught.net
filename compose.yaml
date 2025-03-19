@@ -3,7 +3,7 @@ services:
     build:
       context: ./nginx
     image: nginx
-    container_name: ethernaught_org_nginx
+    container_name: ethernaught_net_nginx
     ports:
       - 80:80
       - 443:443
@@ -19,7 +19,7 @@ services:
 
   database:
     image: mongo
-    container_name: ethernaught_org_database
+    container_name: ethernaught_net_database
     ports:
       - 27017:27017
     volumes:
@@ -36,13 +36,13 @@ services:
       - -c
       - |
         mongod --bind_ip_all
-    #profiles:
-    #  - donotstart
+    profiles:
+      - donotstart
 
   web:
     build:
       context: ./www
-    image: ethernaught_org_www
+    image: ethernaught_net_www
     container_name: www
     environment:
       NODE_ENV: production
@@ -53,13 +53,13 @@ services:
     networks:
       ethernaught:
         ipv4_address: 10.10.0.3
-    #profiles:
-    #  - donotstart
+    profiles:
+      - donotstart
 
   forum:
     build:
       context: ./forum
-    image: ethernaught_org_forum
+    image: ethernaught_net_forum
     container_name: forum
     environment:
       NODE_ENV: production
@@ -70,13 +70,13 @@ services:
     networks:
       ethernaught:
         ipv4_address: 10.10.0.4
-    #profiles:
-    #  - donotstart
+    profiles:
+      - donotstart
 
   api:
     build:
       context: ./api
-    image: ethernaught_org_api
+    image: ethernaught_net_api
     container_name: api
     environment:
       NODE_ENV: production
@@ -87,6 +87,23 @@ services:
     networks:
       ethernaught:
         ipv4_address: 10.10.0.5
+    profiles:
+      - donotstart
+
+  apt:
+    build:
+      context: ./api
+    image: ethernaught_net_api
+    container_name: api
+    environment:
+      NODE_ENV: production
+    restart: always
+    volumes:
+      - ./.env:/usr/src/app/.env
+      - ./modules:/usr/src/app/modules
+    networks:
+      ethernaught:
+        ipv4_address: 10.10.0.6
     #profiles:
     #  - donotstart
 

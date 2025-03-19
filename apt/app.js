@@ -39,19 +39,9 @@ app.use(session({
 }));
 
 app.use(cookies());
-
-app.use((req, res, next) => {
-    const nonce = crypto.randomBytes(16).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-
-    res.setHeader('Content-Security-Policy', `default-src 'self' *.${process.env.DOMAIN}; style-src 'self' 'nonce-${nonce}'`);
-
-    res.locals.nonce = nonce;
-    next();
-});
-
 app.use(useragent.express());
 
-app.get('/', mainController.getHome);
+app.use('/repo', express.static('./repo'));
 
 app.get('*', (req, res) => {
 	mainController.getError(req, res, 404);
