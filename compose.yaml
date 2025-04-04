@@ -36,8 +36,8 @@ services:
       - -c
       - |
         mongod --bind_ip_all
-    profiles:
-      - donotstart
+    #profiles:
+    #  - donotstart
 
   web:
     build:
@@ -53,8 +53,8 @@ services:
     networks:
       ethernaught:
         ipv4_address: 10.5.5.3
-    profiles:
-      - donotstart
+    #profiles:
+    #  - donotstart
 
   forum:
     build:
